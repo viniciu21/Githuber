@@ -15,18 +15,22 @@ function Main (){
     const [loadingRepo, setLoadingRepo] = useState(false);
 
     useEffect( () =>{
+
         const localRepos =  getLocalRepos();
+
         setRepositories(localRepos);
+
     },[]);
 
 
     const handleSubmit =  (e) =>{
         e.preventDefault();
-        setLoadingRepo(true)
+
+        setRepoStatus(false);
+
+        setLoadingRepo(true);
 
         const localRepos =  getLocalRepos();
-
-
 
         fetch(`${linkApiGithub}${repositoryName}`)
             .then(repo => {
@@ -40,7 +44,7 @@ function Main (){
                 return repo;
             })
             .then(repo => {
-                sessionStorage.setItem('Githuber',JSON.stringify([...localRepos,repo]))
+                localStorage.setItem('Githuber',JSON.stringify([...localRepos,repo]))
                 setRepositories([...repositories, repo])
 
             })
@@ -52,32 +56,36 @@ function Main (){
     }
 
     const getLocalRepos= () => {
-        return JSON.parse(sessionStorage.getItem('Githuber')) || []
+        return JSON.parse(localStorage.getItem('Githuber')) || []
     }
 
     const updateRepository = (id) => {
         const repoUpdate = repositories.filter(repo => repo.id === id);
-
-        const localRepos =  getLocalRepos();
 
         fetch(`${linkApiGithub}${repoUpdate[0].full_name}`)
         .then(repo => repo.json())
         .then(repo => repositories.map((repository) => {
             if(repository.id === repo.id){
                 repository = repo;
+
                 repository.pushed_at = moment(repository.pushed_at).fromNow();
+
                 return repository;
             }
             return repository;
         }))
         .then(repos => {
-            sessionStorage.setItem('Githuber',JSON.stringify([repos]));
+            localStorage.setItem('Githuber',JSON.stringify([...repos]));
             setRepositories(repos);
         } )
     }
 
     const removeRepository = (id) =>{
+        const repositoriesUpdated = repositories.filter(repo => repo.id !== id );
 
+        localStorage.setItem('Githuber',JSON.stringify([...repositoriesUpdated]));
+
+        setRepositories(repositoriesUpdated);
     }
 
 

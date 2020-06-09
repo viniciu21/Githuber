@@ -1,10 +1,23 @@
 import styled, {keyframes, css} from 'styled-components';
 
 const shake = keyframes`
-    0%{margin-left: 0px;}
-    25%{margin-left: -5px;}
-    75%{margin-left: 5px;}
-    100%{margin-left: 0px;}
+    0%{
+        margin-left: 0px;
+        box-shadow: 0 0 0.5em red
+    }
+    25%{
+        margin-left: -5px;
+        box-shadow: 0 0 0.5em red
+    }
+    75%{
+        margin-left: 5px;
+        box-shadow: 0 0 0.5em red
+
+    }
+    100%{
+        margin-left: 0px;
+        box-shadow: none;
+    }
 `
 
 export const Container = styled.div`
@@ -26,11 +39,12 @@ export const Form = styled.form`
         flex: 1;
         height: 55px;
         padding: 0 20px;
-        border: ${props => props.Erro ? '2px solid red' : 0};
+        border: 0;
         font-size: 18px;
-        background-color: white;
-        color: #444;
+        background-color: rgb(24,26,27);
+        color: white;
         animation: ${props => (props.Erro ? css`${shake} 0.3s ease-in-out 0s 2;` : '')};
+        transition: box-shadow 0.5s;
     }
     button{
         height: 55px;
