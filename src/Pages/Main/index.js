@@ -61,29 +61,15 @@ function Main (){
         const localRepos =  getLocalRepos();
 
         fetch(`${linkApiGithub}${repoUpdate[0].full_name}`)
-            .then(repo => {
-                if(!repo.ok){
-                    throw Error(repo.statusText);
-                }
-                return repo.json()
-            })
-            .then(repo => {
-                repo.pushed_at = moment(repo.pushed_at).fromNow();
-                return repo;
-            })
-            .then(repo => {
-                repositories.map((repos) => {
-                    if(repos.id === repoUpdate[0].id){
-                        repos = repoUpdate[0];
-                    }
-                    return repos;
-                })
-            })
-            .then(repos => {
-                setRepositories([...repositories])
-                sessionStorage.setItem('Githuber',JSON.stringify([...localRepos,repos]))
-            })
-
+        .then(repo => repo.json())
+        .then(repo => repositories.map((repository) => {
+            if(repository.id === repo.id){
+                console.log(repository, repo);
+                repository = repo;
+                return repository;
+            }
+            return repository;
+        }))
     }
 
     const removeRepository = (id) =>{
