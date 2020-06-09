@@ -64,12 +64,16 @@ function Main (){
         .then(repo => repo.json())
         .then(repo => repositories.map((repository) => {
             if(repository.id === repo.id){
-                console.log(repository, repo);
                 repository = repo;
+                repository.pushed_at = moment(repository.pushed_at).fromNow();
                 return repository;
             }
             return repository;
         }))
+        .then(repos => {
+            sessionStorage.setItem('Githuber',JSON.stringify([repos]));
+            setRepositories(repos);
+        } )
     }
 
     const removeRepository = (id) =>{
