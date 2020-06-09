@@ -1,4 +1,11 @@
-import styled from 'styled-components';
+import styled, {keyframes, css} from 'styled-components';
+
+const shake = keyframes`
+    0%{margin-left: 0px;}
+    25%{margin-left: -5px;}
+    75%{margin-left: 5px;}
+    100%{margin-left: 0px;}
+`
 
 export const Container = styled.div`
     display: flex;
@@ -19,10 +26,11 @@ export const Form = styled.form`
         flex: 1;
         height: 55px;
         padding: 0 20px;
-        border: 0;
+        border: ${props => props.Erro ? '2px solid red' : 0};
         font-size: 18px;
         background-color: white;
         color: #444;
+        animation: ${props => (props.Erro ? css`${shake} 0.3s ease-in-out 0s 2;` : '')};
     }
     button{
         height: 55px;
