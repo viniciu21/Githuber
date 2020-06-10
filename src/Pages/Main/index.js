@@ -44,7 +44,7 @@ function Main (){
                 return repo;
             })
             .then(repo => {
-                localStorage.setItem('Githuber',JSON.stringify([...localRepos,repo]))
+                sessionStorage.setItem('Githuber',JSON.stringify([...localRepos,repo]))
                 setRepositories([...repositories, repo])
 
             })
@@ -56,7 +56,7 @@ function Main (){
     }
 
     const getLocalRepos= () => {
-        return JSON.parse(localStorage.getItem('Githuber')) || []
+        return JSON.parse(sessionStorage.getItem('Githuber')) || []
     }
 
     const updateRepository = (id) => {
@@ -75,7 +75,7 @@ function Main (){
             return repository;
         }))
         .then(repos => {
-            localStorage.setItem('Githuber',JSON.stringify([...repos]));
+            sessionStorage.setItem('Githuber',JSON.stringify([...repos]));
             setRepositories(repos);
         } )
     }
@@ -83,7 +83,7 @@ function Main (){
     const removeRepository = (id) =>{
         const repositoriesUpdated = repositories.filter(repo => repo.id !== id );
 
-        localStorage.setItem('Githuber',JSON.stringify([...repositoriesUpdated]));
+        sessionStorage.setItem('Githuber',JSON.stringify([...repositoriesUpdated]));
 
         setRepositories(repositoriesUpdated);
     }
